@@ -10,9 +10,10 @@ namespace Mango.Core.Enums
     /// </summary>
     public enum Code
     {
-
+        [Description("成功")]
         OK = 200,
 
+        [Description("找不到")]
         NotFound = 404
     }
 }

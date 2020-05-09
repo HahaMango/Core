@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{26AE5CC1-E41C-4352-A7CF-D47F14A52E6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mango.Core", "src\Mango.Core\Mango.Core.csproj", "{FEE25745-112B-40B3-B4E3-FBA00545E2AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mango.Core", "src\Mango.Core\Mango.Core.csproj", "{FEE25745-112B-40B3-B4E3-FBA00545E2AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "src\Sample\Sample.csproj", "{9CBB221D-47E6-4B42-94BE-61A017B36642}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,12 +19,17 @@ Global
 		{FEE25745-112B-40B3-B4E3-FBA00545E2AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEE25745-112B-40B3-B4E3-FBA00545E2AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEE25745-112B-40B3-B4E3-FBA00545E2AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CBB221D-47E6-4B42-94BE-61A017B36642}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CBB221D-47E6-4B42-94BE-61A017B36642}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CBB221D-47E6-4B42-94BE-61A017B36642}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CBB221D-47E6-4B42-94BE-61A017B36642}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FEE25745-112B-40B3-B4E3-FBA00545E2AB} = {26AE5CC1-E41C-4352-A7CF-D47F14A52E6F}
+		{9CBB221D-47E6-4B42-94BE-61A017B36642} = {26AE5CC1-E41C-4352-A7CF-D47F14A52E6F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AF7B9335-EE0C-4BFE-B39B-16E4297E4C8D}
