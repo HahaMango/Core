@@ -9,7 +9,6 @@ namespace Mango.Core.AutoMapper.Config
     {
         public MangoMapperConfig()
         {
-
         }
     }
 }

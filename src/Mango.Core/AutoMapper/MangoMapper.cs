@@ -65,7 +65,7 @@ namespace Mango.Core.AutoMapper
             var typeMap = GetTypeMap(sourceType, destinationType);
             if(typeMap == null)
             {
-                typeMap = InitMap(sourceType, destinationType);
+                InitMap(sourceType, destinationType);
             }
             var mapper = new Mapper(_mapperConfig);
             return mapper.Map(source, destination);
@@ -77,10 +77,10 @@ namespace Mango.Core.AutoMapper
         /// <param name="source"></param>
         /// <param name="destination"></param>
         /// <returns></returns>
-        private static TypeMap InitMap(Type source,Type destination)
+        private static void InitMap(Type source,Type destination)
         {
-            _profile.CreateMap(source, destination);
-            return GetTypeMap(source, destination);
+            _profile.CreateMap(source,destination);
+            _mapperConfig = new MapperConfiguration(cfg => cfg.AddProfile(_profile));
         }
 
         /// <summary>

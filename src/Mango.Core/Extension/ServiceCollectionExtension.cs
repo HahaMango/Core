@@ -18,6 +18,7 @@ namespace Mango.Core.Extension
         {
             var mapper = new MangoMapper();
             services.AddSingleton<IMapper>(mapper);
+            MangoMapperExtension.SetMapper(mapper);
             return services;
         }
     }
