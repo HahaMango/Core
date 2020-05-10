@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Mango.Core\Mango.Core.csproj" />
+    <ProjectReference Include="..\Mango.EntityFramework\Mango.EntityFramework.csproj" />
   </ItemGroup>
 
 </Project>

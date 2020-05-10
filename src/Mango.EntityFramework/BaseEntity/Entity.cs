@@ -8,7 +8,7 @@ namespace Mango.EntityFramework.BaseEntity
     /// <summary>
     /// 基础实体
     /// </summary>
-    public class BaseEntity : IBaseEntity<long>
+    public class Entity : IBaseEntity<long>
     {
         /// <summary>
         /// 主键
