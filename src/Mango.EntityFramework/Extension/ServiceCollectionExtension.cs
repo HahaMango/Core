@@ -1,9 +1,8 @@
-﻿using Mango.EntityFramework.Abstractions;
+﻿using Mango.Core.KeyGenerator;
+using Mango.Core.KeyGenerator.Abstractions;
+using Mango.EntityFramework.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Mango.EntityFramework.Extension
 {
@@ -22,6 +21,7 @@ namespace Mango.EntityFramework.Extension
             {
                 config.UseMySql(connnectionString);
             });
+            services.AddSingleton<IGenerator<long>, SnowFlakeGenerator>();
             services.AddScoped<IEfContextWork, TEFContextWork>();
             return services;
         }
