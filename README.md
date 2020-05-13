@@ -1,4 +1,19 @@
 # Mango 基础设施
 
-- Mango.Core 核心组件，AutoMapper,分布式键生成器
-- Mango.EntityFramework 实体框架，提供仓储层基础接口，提供快速实现仓储的组件
+## Mango.Core 包含常用核心组件
+
+### 添加AutoMapper支持
+
+```csharp
+public class Startup
+{
+    //...
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddAutoMapper();
+    }
+    //...
+}
+```
+
+## Mango.EntityFramework 包含仓储层基础组件
