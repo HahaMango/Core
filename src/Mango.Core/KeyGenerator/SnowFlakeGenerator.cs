@@ -7,7 +7,7 @@ using System.Text;
 namespace Mango.Core.KeyGenerator
 {
     /// <summary>
-    /// 雪花Id生成器
+    /// 雪花Id生成器，必须为单例
     /// </summary>
     public class SnowFlakeGenerator : IGenerator<long>
     {
@@ -16,12 +16,27 @@ namespace Mango.Core.KeyGenerator
         /// </summary>
         private readonly IdWorker _idWorker;
 
+        private static SnowFlakeGenerator _SnowFlakeGenerator;
+
         /// <summary>
-        /// 构造函数
+        /// 防止被实例化
         /// </summary>
-        public SnowFlakeGenerator()
+        private SnowFlakeGenerator()
         {
             _idWorker = new IdWorker(1, 1);
+        }
+
+        /// <summary>
+        /// 获取实例
+        /// </summary>
+        /// <returns></returns>
+        public static SnowFlakeGenerator Instance()
+        {
+            if(_SnowFlakeGenerator == null)
+            {
+                _SnowFlakeGenerator = new SnowFlakeGenerator();
+            }
+            return _SnowFlakeGenerator;
         }
 
         /// <summary>

@@ -11,26 +11,18 @@ namespace Mango.EntityFramework.BaseEntity
     /// </summary>
     public class SnowFlakeEntity : Entity
     {
-        /// <summary>
-        /// Id生成器
-        /// </summary>
-        private readonly IGenerator<long> _generator;
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="generator"></param>
-        public SnowFlakeEntity(IGenerator<long> generator)
-        {
-            _generator = generator;
-        }
+        private SnowFlakeGenerator _snowFlakeGenerator;
 
         /// <summary>
         /// 生成键
         /// </summary>
         public override void SetId()
         {
-            Id = _generator.GetKey();
+            if(_snowFlakeGenerator == null)
+            {
+                _snowFlakeGenerator = SnowFlakeGenerator.Instance();
+            }
+            Id = _snowFlakeGenerator.GetKey();
         }
     }
 }

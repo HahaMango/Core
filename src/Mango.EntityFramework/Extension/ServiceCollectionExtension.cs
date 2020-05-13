@@ -21,7 +21,6 @@ namespace Mango.EntityFramework.Extension
             {
                 config.UseMySql(connnectionString);
             });
-            services.AddSingleton<IGenerator<long>, SnowFlakeGenerator>();
             services.AddScoped<IEfContextWork, TEFContextWork>();
             return services;
         }
