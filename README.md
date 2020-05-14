@@ -16,4 +16,11 @@ public class Startup
 }
 ```
 
+### How To Use
+
+```csharp
+//执行映射，targetObject类型为TObject
+var targetObject = sourceObject.MapTo<TObject>();
+```
+
 ## Mango.EntityFramework 包含仓储层基础组件
