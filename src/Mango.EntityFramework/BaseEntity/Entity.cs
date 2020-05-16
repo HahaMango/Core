@@ -2,6 +2,7 @@
 using Mango.EntityFramework.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Mango.EntityFramework.BaseEntity
@@ -14,6 +15,7 @@ namespace Mango.EntityFramework.BaseEntity
         /// <summary>
         /// 主键
         /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long Id { get; set; }
 
         /// <summary>
