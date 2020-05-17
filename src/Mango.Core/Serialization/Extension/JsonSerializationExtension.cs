@@ -4,6 +4,8 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.IO;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
 namespace Mango.Core.Serialization.Extension
 {
@@ -18,7 +20,8 @@ namespace Mango.Core.Serialization.Extension
         {
             _options = new JsonSerializerOptions
             {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             };
         }
 
