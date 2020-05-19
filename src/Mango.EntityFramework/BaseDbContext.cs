@@ -37,7 +37,7 @@ namespace Mango.EntityFramework
 
                 foreach (var type in types)
                 {
-                    if (modelBuilder.Model.FindEntityType(type) != null || type.Name == "Entity")
+                    if (modelBuilder.Model.FindEntityType(type) != null || type.Name == "Entity" || type.Name == "SnowFlakeEntity")
                         continue;
                     modelBuilder.Model.AddEntityType(type);
                 }

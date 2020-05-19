@@ -33,12 +33,12 @@ namespace Mango.EntityFramework.Repositories
         /// <summary>
         /// 跟踪
         /// </summary>
-        public IQueryable<TEntity> Table => _entities;
+        public IQueryable<TEntity> Table => Entities ;
 
         /// <summary>
         /// 非跟踪
         /// </summary>
-        public IQueryable<TEntity> TableNotTracking => _entities.AsNoTracking();
+        public IQueryable<TEntity> TableNotTracking => Entities.AsNoTracking();
 
         /// <summary>
         /// Db Set
