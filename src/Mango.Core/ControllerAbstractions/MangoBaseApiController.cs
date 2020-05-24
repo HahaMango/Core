@@ -22,12 +22,40 @@ namespace Mango.Core.ControllerAbstractions
         }
 
         /// <summary>
+        /// 返回成功 泛型
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public virtual ApiResult<T> OK<T>()
+        {
+            return new ApiResult<T>
+            {
+                Code = Enums.Code.Ok,
+                Message = "成功"
+            };
+        }
+
+        /// <summary>
         /// 返回错误
         /// </summary>
         /// <returns></returns>
         public virtual ApiResult Error()
         {
             return new ApiResult
+            {
+                Code = Enums.Code.Error,
+                Message = "错误"
+            };
+        }
+
+        /// <summary>
+        /// 返回错误 泛型
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public virtual ApiResult<T> Error<T>()
+        {
+            return new ApiResult<T>
             {
                 Code = Enums.Code.Error,
                 Message = "错误"
@@ -48,12 +76,40 @@ namespace Mango.Core.ControllerAbstractions
         }
 
         /// <summary>
+        /// 返回授权错误 泛型
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public virtual ApiResult<T> AuthorizeError<T>()
+        {
+            return new ApiResult<T>
+            {
+                Code = Enums.Code.Unauthorized,
+                Message = "该操作需要授权登录后才能继续进行"
+            };
+        }
+
+        /// <summary>
         /// 返回权限错误
         /// </summary>
         /// <returns></returns>
         public virtual ApiResult ForbiddenError()
         {
             return new ApiResult
+            {
+                Code = Enums.Code.Forbidden,
+                Message = "当前用户权限不足，不能继续执行"
+            };
+        }
+
+        /// <summary>
+        /// 返回权限错误 泛型
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public virtual ApiResult<T> ForbiddenError<T>()
+        {
+            return new ApiResult<T>
             {
                 Code = Enums.Code.Forbidden,
                 Message = "当前用户权限不足，不能继续执行"
