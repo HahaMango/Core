@@ -1,11 +1,9 @@
-﻿using Mango.EntityFramework.BaseEntity;
+﻿using Mango.Core.EntityFramework.BaseEntity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyModel;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace Mango.EntityFramework
 {

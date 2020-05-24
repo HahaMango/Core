@@ -1,11 +1,11 @@
 ﻿using Mango.Core.KeyGenerator;
-using Mango.EntityFramework.Abstractions;
+using Mango.Core.EntityFramework.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Mango.EntityFramework.BaseEntity
+namespace Mango.Core.EntityFramework.BaseEntity
 {
     /// <summary>
     /// 基础实体

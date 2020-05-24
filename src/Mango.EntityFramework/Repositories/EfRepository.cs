@@ -1,9 +1,8 @@
-﻿using Mango.EntityFramework.Abstractions;
+﻿using Mango.Core.EntityFramework.Abstractions;
 using Mango.EntityFramework.Abstractions.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 

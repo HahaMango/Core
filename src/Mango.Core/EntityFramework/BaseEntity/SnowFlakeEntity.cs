@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mango.EntityFramework.BaseEntity
+namespace Mango.Core.EntityFramework.BaseEntity
 {
     /// <summary>
     /// 雪花算法实体
