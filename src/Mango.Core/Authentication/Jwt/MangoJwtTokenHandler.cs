@@ -1,7 +1,9 @@
 ﻿using Mango.Core.EntityFramework.Abstractions;
 using Mango.Core.EntityFramework.BaseEntity;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
@@ -15,7 +17,7 @@ namespace Mango.Core.Authentication.Jwt
         /// <summary>
         /// jwt配置
         /// </summary>
-        public MangoJwtOptions Options { get; set; }
+        public MangoJwtOptions Options { get; }
 
         /// <summary>
         /// 构造函数
@@ -58,7 +60,16 @@ namespace Mango.Core.Authentication.Jwt
                 claims.Add(new Claim(ClaimTypes.Name, userName));
             }
             #endregion
-            return "";
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Options.Key));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                issuer: Options.Issuer,
+                audience: Options.Audience,
+                claims: claims,
+                expires: DateTime.Now.AddSeconds(Options.ExpiresSec),
+                signingCredentials: creds);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         /// <summary>

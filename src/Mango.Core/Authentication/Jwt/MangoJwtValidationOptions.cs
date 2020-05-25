@@ -5,9 +5,9 @@ using System.Text;
 namespace Mango.Core.Authentication.Jwt
 {
     /// <summary>
-    /// Jwt配置类
+    /// jwt认证配置
     /// </summary>
-    public class MangoJwtOptions
+    public class MangoJwtValidationOptions
     {
         /// <summary>
         /// 加密密钥
@@ -15,18 +15,13 @@ namespace Mango.Core.Authentication.Jwt
         public string Key { get; set; }
 
         /// <summary>
-        /// 过期时间（单位：秒）
-        /// </summary>
-        public int ExpiresSec { get; set; }
-
-        /// <summary>
         /// 域
         /// </summary>
-        public string Audience { get; set; }
+        public string[] Audiences { get; set; }
 
         /// <summary>
         /// 颁发机构
         /// </summary>
-        public string Issuer { get; set; }
+        public string[] Issuers { get; set; }
     }
 }
