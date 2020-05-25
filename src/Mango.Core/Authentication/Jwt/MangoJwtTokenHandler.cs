@@ -60,13 +60,14 @@ namespace Mango.Core.Authentication.Jwt
                 claims.Add(new Claim(ClaimTypes.Name, userName));
             }
             #endregion
+            var sec = Options.ExpiresSec.HasValue ? Options.ExpiresSec.Value : 604800;
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Options.Key));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(
                 issuer: Options.Issuer,
                 audience: Options.Audience,
                 claims: claims,
-                expires: DateTime.Now.AddSeconds(Options.ExpiresSec),
+                expires: DateTime.Now.AddSeconds(sec),
                 signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

@@ -17,7 +17,7 @@ namespace Mango.Core.Authentication.Jwt
         /// <summary>
         /// 过期时间（单位：秒）
         /// </summary>
-        public int ExpiresSec { get; set; }
+        public int? ExpiresSec { get; set; }
 
         /// <summary>
         /// 域
