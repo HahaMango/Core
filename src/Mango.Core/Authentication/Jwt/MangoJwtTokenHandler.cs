@@ -10,7 +10,7 @@ using System.Text;
 namespace Mango.Core.Authentication.Jwt
 {
     /// <summary>
-    /// Jwt验证，token颁发，token过期等处理器
+    /// jwt token颁发处理器（过期修改密码等操作由客户端放弃密钥）
     /// </summary>
     public class MangoJwtTokenHandler
     {
@@ -59,6 +59,15 @@ namespace Mango.Core.Authentication.Jwt
             {
                 var userName = (string)userProp.GetValue(user);
                 claims.Add(new Claim(ClaimTypes.Name, userName));
+            }
+            #endregion
+
+            #region 如果实体类有Role字段
+            var roleProp = userType.GetProperty("Role", typeof(string));
+            if(roleProp != null)
+            {
+                var role = (string)userProp.GetValue(user);
+                claims.Add(new Claim(ClaimTypes.Role, role));
             }
             #endregion
 

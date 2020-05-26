@@ -27,12 +27,12 @@ namespace Mango.Core.ControllerAbstractions
                 return null;
             }
             var identity = User.Identity;
-            var userId = User.Claims.FirstOrDefault(item => item.Type == "id")?.Value;
+            var userId = User.Claims.FirstOrDefault(item => item.Type == ClaimTypes.NameIdentifier)?.Value;
             if(!string.IsNullOrEmpty(userId))
             {
                 return null;
             }
-            var userName = User.Claims.FirstOrDefault(item => item.Type == "name")?.Value;
+            var userName = User.Claims.FirstOrDefault(item => item.Type == ClaimTypes.Name)?.Value;
             var role = User.Claims.FirstOrDefault(item => item.Type == ClaimTypes.Role)?.Value;
             return new ControllerUser
             {

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +21,6 @@ namespace Sample.Controllers
             _logger = logger;
         }
 
-        [Authorize]
         public IActionResult Index()
         {
             return View();
@@ -34,6 +35,17 @@ namespace Sample.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public string PrintByteArray(byte[] array)
+        {
+            string s = "";
+            for (int i = 0; i < array.Length; i++)
+            {
+                s+=$"{array[i]:X2}";
+                if ((i % 4) == 3) s+=" ";
+            }
+            return s;
         }
     }
 }
