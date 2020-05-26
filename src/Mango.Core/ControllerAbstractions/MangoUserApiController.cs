@@ -28,7 +28,7 @@ namespace Mango.Core.ControllerAbstractions
             }
             var identity = User.Identity;
             var userId = User.Claims.FirstOrDefault(item => item.Type == ClaimTypes.NameIdentifier)?.Value;
-            if(!string.IsNullOrEmpty(userId))
+            if(string.IsNullOrEmpty(userId))
             {
                 return null;
             }
