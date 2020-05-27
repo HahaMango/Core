@@ -7,6 +7,9 @@ using System.Reflection;
 
 namespace Mango.EntityFramework
 {
+    /// <summary>
+    /// Mango基础EF上下文
+    /// </summary>
     public class BaseDbContext : DbContext
     {
         public BaseDbContext()

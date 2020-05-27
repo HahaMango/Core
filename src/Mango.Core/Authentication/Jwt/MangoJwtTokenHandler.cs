@@ -43,8 +43,10 @@ namespace Mango.Core.Authentication.Jwt
         /// <typeparam name="TKey">用户Id类型</typeparam>
         /// <param name="user"></param>
         /// <param name="otherClaims">额外添加的claims</param>
+        /// <param name="audience">接受者</param>
+        /// <param name="issuer">颁发机构</param>
         /// <returns></returns>
-        public string IssuedToken<TUser,TKey>(TUser user, params Claim[] otherClaims)
+        public string IssuedToken<TUser,TKey>(TUser user, string issuer = null,string audience = null, params Claim[] otherClaims)
             where TUser : IBaseEntity<TKey>
         {
             var claims = new List<Claim>
@@ -77,13 +79,27 @@ namespace Mango.Core.Authentication.Jwt
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Options.Key));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(
-                issuer: Options.Issuer,
-                audience: Options.Audience,
+                issuer: issuer ?? Options.Issuer,
+                audience: audience ?? Options.Audience,
                 claims: claims,
                 expires: DateTime.Now.AddSeconds(sec),
                 signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        /// <summary>
+        /// 颁发令牌
+        /// </summary>
+        /// <typeparam name="TUser"></typeparam>
+        /// <typeparam name="TKey"></typeparam>
+        /// <param name="user"></param>
+        /// <param name="otherClaims"></param>
+        /// <returns></returns>
+        public string IssuedToken<TUser, TKey>(TUser user,params Claim[] otherClaims)
+            where TUser : IBaseEntity<TKey>
+        {
+            return IssuedToken<TUser, TKey>(user: user, issuer: null, audience: null, otherClaims: otherClaims);
         }
 
         /// <summary>
