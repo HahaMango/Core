@@ -40,8 +40,8 @@ XYrgUIme7y+i3phfdGR1B5zlpjE5C+oG8udXP8I0PKAagy4a8j0CNqJtJZaVwtEk
 wLvUq9MZvk+kbRmRulIKKDSjRAGlxPK3wG416xUfEEox/wmuQicWsb83SOqrSX6Z
 vFixHmPWpvv8a0r26gmdHyhMmXTcl2P5RHdJ/iCBKj9/pIAabhenN/vClnsB8vv/
 tN9fcep4jGpay5xZ0Nj2fSWygw==",
-                Audience = "test",
-                Issuer = "www.hahamango.cn",
+                DefalutAudience = "test",
+                DefalutIssuer = "www.hahamango.cn",
                 ExpiresSec = 3600
             };
             var jwt = new MangoJwtTokenHandler(config).IssuedToken(new TestUser(true));

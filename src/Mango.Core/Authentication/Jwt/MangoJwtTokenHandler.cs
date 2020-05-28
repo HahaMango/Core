@@ -79,8 +79,8 @@ namespace Mango.Core.Authentication.Jwt
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Options.Key));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(
-                issuer: issuer ?? Options.Issuer,
-                audience: audience ?? Options.Audience,
+                issuer: issuer ?? Options.DefalutIssuer,
+                audience: audience ?? Options.DefalutAudience,
                 claims: claims,
                 expires: DateTime.Now.AddSeconds(sec),
                 signingCredentials: creds);

@@ -20,13 +20,13 @@ namespace Mango.Core.Authentication.Jwt
         public int? ExpiresSec { get; set; }
 
         /// <summary>
-        /// 域
+        /// 默认请求域
         /// </summary>
-        public string Audience { get; set; }
+        public string DefalutAudience { get; set; }
 
         /// <summary>
-        /// 颁发机构
+        /// 令牌默认颁发机构
         /// </summary>
-        public string Issuer { get; set; }
+        public string DefalutIssuer { get; set; }
     }
 }
