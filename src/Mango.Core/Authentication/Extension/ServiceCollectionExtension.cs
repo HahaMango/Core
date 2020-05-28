@@ -29,6 +29,8 @@ namespace Mango.Core.Authentication.Extension
 
         /// <summary>
         /// 添加jwt认证
+        /// 
+        /// 基于Audience字段权限控制，Audience字段形如x.y.z 。如果配置的Audience字段为x.y,则只有具有形如x.y.[z1.z2...zn]的Token才能够认证通过,如token只有x。则无法通过认证。
         /// </summary>
         /// <param name="services"></param>
         /// <param name="options">jwt认证配置</param>
@@ -47,9 +49,20 @@ namespace Mango.Core.Authentication.Extension
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.FromMinutes(15),
                         ValidateIssuerSigningKey = true,
-                        ValidAudiences = jwtOptions.Audiences,
-                        ValidIssuers = jwtOptions.Issuers,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key))
+                        ValidAudience = jwtOptions.Audience,
+                        ValidIssuer = jwtOptions.Issuer,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key)),
+                        AudienceValidator = (validAud, b, c) =>
+                        {
+                            foreach(var aud in validAud)
+                            {
+                                if(aud.Contains(c.ValidAudience))
+                                {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
                     };
                 });
             return services;

@@ -17,11 +17,11 @@ namespace Mango.Core.Authentication.Jwt
         /// <summary>
         /// 域
         /// </summary>
-        public string[] Audiences { get; set; }
+        public string Audience { get; set; }
 
         /// <summary>
         /// 颁发机构
         /// </summary>
-        public string[] Issuers { get; set; }
+        public string Issuer { get; set; }
     }
 }

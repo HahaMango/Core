@@ -42,7 +42,7 @@ namespace Mango.Core.Authentication.Jwt
         /// <typeparam name="TUser">用户实体类，实现IBaseEntity</typeparam>
         /// <typeparam name="TKey">用户Id类型</typeparam>
         /// <param name="user"></param>
-        /// <param name="otherClaims">额外添加的claims</param>
+        /// <param name="otherClaims">额外添加的claims claimType为'aud'可追加aud字段。</param>
         /// <param name="audience">接受者</param>
         /// <param name="issuer">颁发机构</param>
         /// <returns></returns>
@@ -84,6 +84,7 @@ namespace Mango.Core.Authentication.Jwt
                 claims: claims,
                 expires: DateTime.Now.AddSeconds(sec),
                 signingCredentials: creds);
+            var aud = new Claim("aud", "");
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
