@@ -31,5 +31,21 @@ namespace Mango.Core.Extension
         {
             return _mapper.MapTo<TDestination>(source);
         }
+
+        /// <summary>
+        /// 列表到列表的映射
+        /// </summary>
+        /// <typeparam name="TDestination"></typeparam>
+        /// <param name="objects"></param>
+        /// <returns></returns>
+        public static IEnumerable<TDestination> MapToList<TDestination>(this IEnumerable<object> objects) where TDestination : new()
+        {
+            var result = new List<TDestination>();
+            foreach(var o in objects)
+            {
+                result.Add(o.MapTo<TDestination>());
+            }
+            return result;
+        }
     }
 }
