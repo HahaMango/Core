@@ -1,5 +1,6 @@
 ﻿using Mango.Core.ApiResponse;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -114,6 +115,58 @@ namespace Mango.Core.ControllerAbstractions
                 Code = Enums.Code.Forbidden,
                 Message = "当前用户权限不足，不能继续执行"
             };
+        }
+
+        /// <summary>
+        /// 模型验证错误
+        /// </summary>
+        /// <returns></returns>
+        public virtual ApiResult InValidModelsError()
+        {
+            var msg = ModelsErrorMessage(ModelState);
+            return new ApiResult
+            {
+                Code = Enums.Code.Error,
+                Message = msg
+            };
+        }
+
+        /// <summary>
+        /// 模型验证错误
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public virtual ApiResult<T> InValidModelsError<T>()
+        {
+            var msg = ModelsErrorMessage(ModelState);
+            return new ApiResult<T>
+            {
+                Code = Enums.Code.Error,
+                Message = msg
+            };
+        }
+
+        /// <summary>
+        /// 模型验证错误信息
+        /// </summary>
+        /// <param name="modelState"></param>
+        /// <returns></returns>
+        private string ModelsErrorMessage(ModelStateDictionary modelState)
+        {
+            StringBuilder sb = new StringBuilder("");
+            foreach(var m in modelState)
+            {
+                if (m.Value.ValidationState == ModelValidationState.Invalid)
+                {
+                    StringBuilder esb = new StringBuilder("");
+                    foreach(var em in m.Value.Errors)
+                    {
+                        esb.Append($"{ em.ErrorMessage}\n");
+                    }
+                    sb.Append($"模型验证错误key:{m.Key},msg:{esb.ToString()}");
+                }
+            }
+            return sb.ToString();
         }
     }
 }
