@@ -29,14 +29,17 @@ namespace Mango.Infrastructure.HttpService
         /// <param name="url"></param>
         /// <param name="token">jwt身份令牌</param>
         /// <returns></returns>
-        public async Task<T> GetAsync(string url, string token = null)
+        public async Task<HttpResponse<T>> GetAsync(string url, string token = null)
         {
+            var httpResponse = new HttpResponse<T>();
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
             if(token != null)
             {
                 requestMessage.Headers.Add(HttpRequestHeaderConst.Authorization.HeaderKeyName, HttpRequestHeaderConst.Authorization.Bearer + token);
             }
             var response = await _httpClient.SendAsync(requestMessage);
+            httpResponse.StatusCode = response.StatusCode;
+            httpResponse.IsSuccessStatusCode = response.IsSuccessStatusCode;
             var content = default(string);
             using(MemoryStream ms = new MemoryStream())
             {
@@ -49,9 +52,11 @@ namespace Mango.Infrastructure.HttpService
             }
             if (!string.IsNullOrEmpty(content))
             {
-                return await content.ToObjectAsync<T>();
+                var contentJson = await content.ToObjectAsync<T>();
+                httpResponse.Data = contentJson;
+                return httpResponse;
             }
-            return await Task.FromResult<T>(null);
+            return await Task.FromResult(httpResponse);
         }
 
         /// <summary>
@@ -61,19 +66,23 @@ namespace Mango.Infrastructure.HttpService
         /// <param name="content"></param>
         /// <param name="token">jwt身份令牌</param>
         /// <returns></returns>
-        public async Task<T> PostAsync(string url, string content, string token = null)
+        public async Task<HttpResponse<T>> PostAsync(string url, string content, string token = null)
         {
-            var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
+            var httpResponse = new HttpResponse<T>();
+            var requestMessage = new HttpRequestMessage(HttpMethod.Post, url);
             requestMessage.Content = new StringContent(content, Encoding.UTF8, HttpRequestHeaderConst.ContentType.JSON);
             if (token != null)
             {
                 requestMessage.Headers.Add(HttpRequestHeaderConst.Authorization.HeaderKeyName, HttpRequestHeaderConst.Authorization.Bearer + token);
             }
             var response = await _httpClient.SendAsync(requestMessage);
+            httpResponse.StatusCode = response.StatusCode;
+            httpResponse.IsSuccessStatusCode = response.IsSuccessStatusCode;
             var responseResult = default(string);
             using (MemoryStream ms = new MemoryStream())
             {
                 await response.Content.CopyToAsync(ms);
+                ms.Position = 0;
                 using (StreamReader sr = new StreamReader(ms, Encoding.UTF8))
                 {
                     responseResult = await sr.ReadToEndAsync();
@@ -81,9 +90,11 @@ namespace Mango.Infrastructure.HttpService
             }
             if (!string.IsNullOrEmpty(responseResult))
             {
-                return await responseResult.ToObjectAsync<T>();
+                var contentJson = await responseResult.ToObjectAsync<T>();
+                httpResponse.Data = contentJson;
+                return httpResponse;
             }
-            return await Task.FromResult<T>(null);
+            return await Task.FromResult(httpResponse);
         }
     }
 }

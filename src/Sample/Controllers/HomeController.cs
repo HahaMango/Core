@@ -31,7 +31,7 @@ namespace Sample.Controllers
 
         public async Task<IActionResult> Privacy()
         {
-            var o = await _jsonHttpService.PostAsync("https://localhost:5001/api/test/get","");
+            var o = await _jsonHttpService.PostAsync("https://localhost:5001/api/test/get", "{\"message\":\"123\"}");
             return View();
         }
 

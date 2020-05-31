@@ -14,7 +14,7 @@ namespace Mango.Core.HttpService
         /// <param name="url"></param>
         /// <param name="token">jwt令牌</param>
         /// <returns></returns>
-        Task<T> GetAsync(string url, string token = null);
+        Task<HttpResponse<T>> GetAsync(string url, string token = null);
 
         /// <summary>
         /// post请求
@@ -23,6 +23,6 @@ namespace Mango.Core.HttpService
         /// <param name="content"></param>
         /// <param name="token">jwt令牌</param>
         /// <returns></returns>
-        Task<T> PostAsync(string url, string content, string token = null);
+        Task<HttpResponse<T>> PostAsync(string url, string content, string token = null);
     }
 }
