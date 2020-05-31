@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Mango.Core.HttpService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,19 +16,22 @@ namespace Sample.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IJsonHttpService<TestJsonEntity> _jsonHttpService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,IJsonHttpService<TestJsonEntity> jsonHttpService)
         {
             _logger = logger;
+            _jsonHttpService = jsonHttpService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> Privacy()
         {
+            var o = await _jsonHttpService.PostAsync("https://localhost:5001/api/test/get","");
             return View();
         }
 

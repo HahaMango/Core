@@ -5,4 +5,8 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Mango.Core\Mango.Core.csproj" />
+  </ItemGroup>
+
 </Project>
