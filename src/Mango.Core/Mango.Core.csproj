@@ -5,6 +5,13 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Version>1.0.14</Version>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Copyright>Copyright @2020 Chiva Chen</Copyright>
+    <Description>Foundation Libraries</Description>
+    <Authors>Chiva Chen</Authors>
+    <Company>Mango</Company>
+    <PackageProjectUrl>https://github.com/HahaMango/Core</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/HahaMango/Core</RepositoryUrl>
+    <PackageTags></PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
