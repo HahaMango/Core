@@ -43,8 +43,8 @@ steps:
     packagesToPack: '$(Build.SourcesDirectory)/src/**/*.csproj;!**/Sample.csproj'
     versioningScheme: 'byBuildNumber'
 
-- task: CopyFiles@2
+- task: PublishBuildArtifacts@1
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)'
-    Contents: '**.nupkg'
-    TargetFolder: '$(build.artifactstagingdirectory)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'MangoCore'
+    publishLocation: 'Container'
