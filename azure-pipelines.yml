@@ -55,7 +55,6 @@ stages:
       inputs:
         command: restore
         projects: '**/*.csproj'
-        restoreArguments: --configuration $(buildConfiguration)
         feedsToUse: select
     - task: DotNetCoreCLI@2
       inputs:
@@ -75,8 +74,8 @@ stages:
     condition: |
       and
       (
-        in(dependencies.a.result, 'Succeeded'),
-        in(dependencies.b.result, 'Succeeded')
+        in(dependencies.windows_build.result, 'Succeeded'),
+        in(dependencies.linux_build.result, 'Succeeded')
       )
     pool:
       vmImage: ubuntu-latest
