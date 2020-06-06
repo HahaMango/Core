@@ -11,7 +11,7 @@
     <Company>Mango</Company>
     <PackageProjectUrl>https://github.com/HahaMango/Core</PackageProjectUrl>
     <RepositoryUrl>https://github.com/HahaMango/Core</RepositoryUrl>
-    <PackageTags></PackageTags>
+    <PackageTags>Asp.Net Core;Core;Web</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

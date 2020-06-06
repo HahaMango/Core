@@ -1,5 +1,7 @@
 # Mango 基础设施
 
+[![Build Status](https://dev.azure.com/q932104843/Mango.Core/_apis/build/status/HahaMango.Core?branchName=master)](https://dev.azure.com/q932104843/Mango.Core/_build/latest?definitionId=7&branchName=master)
+
 ## Mango.Core 包含常用核心组件
 
 ### 添加AutoMapper支持

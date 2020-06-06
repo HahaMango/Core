@@ -14,7 +14,7 @@ variables:
 - name: buildConfiguration
   value: Release
 - name: major
-  value: 1
+  value: 2
 - name: minor
   value: 0
 - name: patch
@@ -83,18 +83,9 @@ stages:
     steps:
     - task: DotNetCoreCLI@2
       inputs:
-        command: restore
-        projects: '**/*.csproj'
-        feedsToUse: select
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: build
-        projects: '**/*.csproj'
-        arguments: --configuration $(buildConfiguration)
-    - task: NuGetCommand@2
-      inputs:
         command: 'pack'
         packagesToPack: '$(Build.SourcesDirectory)/src/**/*.csproj;!**/Sample.csproj'
+        configuration: '$(buildConfiguration)'
         versioningScheme: 'byBuildNumber'
     - task: PublishBuildArtifacts@1
       inputs:

@@ -10,6 +10,7 @@
     <Description>Foundation EF Libraries</Description>
     <PackageProjectUrl>https://github.com/HahaMango/Core</PackageProjectUrl>
     <RepositoryUrl>https://github.com/HahaMango/Core</RepositoryUrl>
+    <PackageTags>EF Core;Mango EF;ORM</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
