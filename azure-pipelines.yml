@@ -3,48 +3,93 @@
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
 name: $(major).$(minor).$(patch)
-
 trigger:
-- master
-
-pool:
-  vmImage: 'windows-latest'
+  branches:
+    include:
+    - master
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
-  major: '1'
-  minor: '0'
-  patch: $[counter(variables['minor'], 1)]
+- name: buildPlatform
+  value: Any CPU
+- name: buildConfiguration
+  value: Release
+- name: major
+  value: 1
+- name: minor
+  value: 0
+- name: patch
+  value: $[counter(variables['minor'], 1)]
 
-steps:
-- task: NuGetToolInstaller@1
+stages:
+- stage: __default
+  jobs:
+  - job: windows_build
+    pool:
+      vmImage: windows-latest
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
+    variables:
+    - name: solution
+      value: '**/*.sln'
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    steps:
+    - task: NuGetToolInstaller@1
+    - task: NuGetCommand@2
+      inputs:
+        restoreSolution: $(solution)
+    - task: VSBuild@1
+      inputs:
+        solution: $(solution)
+        platform: $(buildPlatform)
+        configuration: $(buildConfiguration)
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: test
+        projects: $(Build.SourcesDirectory)/test/MangoTest/*.csproj
+        arguments: --configuration $(buildConfiguration)
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
-    projects: '$(Build.SourcesDirectory)/test/MangoTest/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
+  - job: linux_build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: restore
+        projects: '**/*.csproj'
+        restoreArguments: --configuration $(buildConfiguration)
+        feedsToUse: select
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: build
+        projects: '**/*.csproj'
+        arguments: --configuration $(buildConfiguration)
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: test
+        projects: $(Build.SourcesDirectory)/test/MangoTest/*.csproj
+        arguments: --configuration $(buildConfiguration)
 
-- task: NuGetCommand@2
-  inputs:
-    command: 'pack'
-    packagesToPack: '$(Build.SourcesDirectory)/src/**/*.csproj;!**/Sample.csproj'
-    versioningScheme: 'byBuildNumber'
+  - job: nuget_pack
+    dependsOn: 
+    - windows_build
+    - linux_build
+    condition: |
+      and
+      (
+        in(dependencies.a.result, 'Succeeded'),
+        in(dependencies.b.result, 'Succeeded')
+      )
+    pool:
+      vmImage: ubuntu-latest
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'MangoCore'
-    publishLocation: 'Container'
+    steps:
+    - task: NuGetCommand@2
+      inputs:
+        command: 'pack'
+        packagesToPack: '$(Build.SourcesDirectory)/src/**/*.csproj;!**/Sample.csproj'
+        versioningScheme: 'byBuildNumber'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'nugetpack'
+        publishLocation: 'Container'
