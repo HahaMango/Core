@@ -23,13 +23,15 @@ namespace Mango.Infrastructure.Helper
         /// <param name="param"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        public static async Task<HttpResponse<string>> GetAsync(string url,Dictionary<string,string> param,string token = null)
+        public static async Task<HttpResponse<string>> GetAsync(string url,Dictionary<string,string> param = null,string token = null)
         {
             var httpResponse = new HttpResponse<string>();
             #region 构造URL
-            var queryString =  BuildQueryString(param);
-            //queryString = URLEncode(queryString);
-            url += queryString;
+            if (param != null)
+            {
+                var queryString = BuildQueryString(param);
+                url += queryString;
+            }
             #endregion
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
             if (token != null)
@@ -61,11 +63,14 @@ namespace Mango.Infrastructure.Helper
         /// <param name="mediaType">默认为json</param>
         /// <param name="token"></param>
         /// <returns></returns>
-        public static async Task<HttpResponse<string>> PostAsync(string url,string body,string mediaType = "application/json", string token = null)
+        public static async Task<HttpResponse<string>> PostAsync(string url,string body = null,string mediaType = "application/json", string token = null)
         {
             var httpResponse = new HttpResponse<string>();
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, url);
-            requestMessage.Content = new StringContent(body, Encoding.UTF8, mediaType);
+            if (!string.IsNullOrEmpty(body))
+            {
+                requestMessage.Content = new StringContent(body, Encoding.UTF8, mediaType);
+            }
             if (token != null)
             {
                 requestMessage.Headers.Add(HttpRequestHeaderConst.Authorization.HeaderKeyName, HttpRequestHeaderConst.Authorization.Bearer + token);
@@ -95,14 +100,16 @@ namespace Mango.Infrastructure.Helper
         /// <param name="param"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        public static async Task<HttpResponse<T>> GetAsync<T>(string url, Dictionary<string, string> param, string token = null)
+        public static async Task<HttpResponse<T>> GetAsync<T>(string url, Dictionary<string, string> param = null, string token = null)
             where T : class, new()
         {
             var httpResponse = new HttpResponse<T>();
             #region 构造URL
-            var queryString = BuildQueryString(param);
-            //queryString = URLEncode(queryString);
-            url += queryString;
+            if (param != null)
+            {
+                var queryString = BuildQueryString(param);
+                url += queryString;
+            }
             #endregion
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
             if (token != null)
@@ -133,12 +140,15 @@ namespace Mango.Infrastructure.Helper
         /// <param name="jsonBody"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        public static async Task<HttpResponse<T>> PostAsync<T>(string url, string jsonBody, string token = null)
+        public static async Task<HttpResponse<T>> PostAsync<T>(string url, string jsonBody = null, string token = null)
             where T : class, new()
         {
             var httpResponse = new HttpResponse<T>();
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, url);
-            requestMessage.Content = new StringContent(jsonBody, Encoding.UTF8, HttpRequestHeaderConst.ContentType.JSON);
+            if (!string.IsNullOrEmpty(jsonBody))
+            {
+                requestMessage.Content = new StringContent(jsonBody, Encoding.UTF8, HttpRequestHeaderConst.ContentType.JSON);
+            }
             if (token != null)
             {
                 requestMessage.Headers.Add(HttpRequestHeaderConst.Authorization.HeaderKeyName, HttpRequestHeaderConst.Authorization.Bearer + token);

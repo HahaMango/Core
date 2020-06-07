@@ -13,11 +13,7 @@ namespace MangoTest
         [Fact]
         public async Task TestGet()
         {
-            var parm = new Dictionary<string, string>
-            {
-                { "q", "百度" }
-            };
-            var result = await HttpHelper.GetAsync("https://cn.bing.com/search", parm);
+            var result = await HttpHelper.GetAsync("https://cn.bing.com/");
             Assert.True(result.IsSuccessStatusCode);
         }
     }

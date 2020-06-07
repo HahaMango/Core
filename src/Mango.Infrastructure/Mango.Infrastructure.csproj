@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Mango.Core\Mango.Core.csproj" />
+    <PackageReference Include="Mango.Core" Version="2.0.10" />
   </ItemGroup>
 
 </Project>
