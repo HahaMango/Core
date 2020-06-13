@@ -10,18 +10,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Sample.Models;
+using Mango.Core.Network;
 
 namespace Sample.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly IJsonHttpService<TestJsonEntity> _jsonHttpService;
 
-        public HomeController(ILogger<HomeController> logger,IJsonHttpService<TestJsonEntity> jsonHttpService)
+        public HomeController()
         {
-            _logger = logger;
-            _jsonHttpService = jsonHttpService;
         }
 
         public async Task<IActionResult> Index()
@@ -31,7 +28,8 @@ namespace Sample.Controllers
 
         public async Task<IActionResult> Privacy()
         {
-            var o = await _jsonHttpService.PostAsync("https://localhost:5001/api/test/get", "{\"message\":\"123\"}");
+            NetworkTransport nt = new NetworkTransport(SingletonSocketConnection.Instance());
+            await nt.SendBytesAsync(new ReadOnlyMemory<byte>());
             return View();
         }
 
