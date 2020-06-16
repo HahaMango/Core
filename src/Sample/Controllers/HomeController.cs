@@ -1,27 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Mango.Core.Network;
+using Microsoft.AspNetCore.Mvc;
+using Sample.Models;
+using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Mango.Core.HttpService;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Sample.Models;
 
 namespace Sample.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly IJsonHttpService<TestJsonEntity> _jsonHttpService;
+        private readonly NetworkTransport _networkTransport;
 
-        public HomeController(ILogger<HomeController> logger,IJsonHttpService<TestJsonEntity> jsonHttpService)
+        public HomeController(NetworkTransport networkTransport)
         {
-            _logger = logger;
-            _jsonHttpService = jsonHttpService;
+            _networkTransport = networkTransport;
         }
 
         public async Task<IActionResult> Index()
@@ -29,10 +22,11 @@ namespace Sample.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Privacy()
+        public async Task<string> Privacy()
         {
-            var o = await _jsonHttpService.PostAsync("https://localhost:5001/api/test/get", "{\"message\":\"123\"}");
-            return View();
+            var result = await _networkTransport.SendBytesAsync(Encoding.ASCII.GetBytes("hello world"));
+            var s = Encoding.ASCII.GetString(result);
+            return s;
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

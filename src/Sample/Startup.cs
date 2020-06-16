@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using Mango.Core.Authentication.Extension;
 using Mango.Core.Extension;
 using Mango.Core.HttpService;
-using Mango.EntityFramework;
-using Mango.Infrastructure.HttpService;
+using Mango.Core.Network;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,9 +30,9 @@ namespace Sample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddAutoMapper();
 
-            services.AddHttpClient<IJsonHttpService<TestJsonEntity>, JsonHttpService<TestJsonEntity>>();
+            NetworkTransport nt = new NetworkTransport(SingletonSocketConnection.Instance());
+            services.AddSingleton(nt);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,7 +53,6 @@ namespace Sample
 
             app.UseRouting();
 
-            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
