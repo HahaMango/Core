@@ -12,12 +12,31 @@ namespace Mango.Core.Network
 {
     /// <summary>
     /// 以行（\n）为单位处理的TCP服务端
+    /// 
+    /// 该类为抽象类，需要实现类实现具体的数据处理Handle方法
     /// </summary>
     public abstract class LineAbstractTcpServer : IMangoTcpServer
     {
+        /// <summary>
+        /// 线程锁
+        /// </summary>
+        private readonly object _lock = new object();
+
         private readonly ILogger<LineAbstractTcpServer> _logger;
 
-        public LineAbstractTcpServer(ILogger<LineAbstractTcpServer> logger)
+        /// <summary>
+        /// 创建行处理TCP服务端
+        /// </summary>
+        public LineAbstractTcpServer() : this(null)
+        {
+
+        }
+
+        /// <summary>
+        /// 创建行处理TCP服务端（若logger参数为空则用ILoggerFactory初始化内部日志）
+        /// </summary>
+        /// <param name="logger">配合依赖注入的参数</param>
+        public LineAbstractTcpServer(ILogger<LineAbstractTcpServer> logger = null)
         {
             if(logger == null)
             {
@@ -26,6 +45,12 @@ namespace Mango.Core.Network
             _logger = logger;
         }
 
+        /// <summary>
+        /// 在指定端口开始监听
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="port"></param>
+        /// <returns></returns>
         public async Task Start(IPAddress address, int port)
         {
             var listenSocket = new Socket(SocketType.Stream, ProtocolType.Tcp);
@@ -42,9 +67,30 @@ namespace Mango.Core.Network
             }
         }
 
-        public abstract Task Handle(ReadOnlyMemory<byte> data, NetworkStream stream);
+        /// <summary>
+        /// 数据处理程序
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public abstract Task<ReadOnlyMemory<byte>> Handle(ReadOnlyMemory<byte> input);
 
         #region 辅助函数
+
+        /// <summary>
+        /// 处理单行消息并将相应发送到流中
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        private async Task Process(ReadOnlyMemory<byte> data, NetworkStream stream)
+        {
+            var response = await Handle(data);
+            lock (_lock)
+            {
+                stream.Write(response.ToArray(), 0, response.Length);
+                stream.Flush();
+            }
+        }
 
         /// <summary>
         /// 接收并处理单个TCP连接
@@ -67,10 +113,11 @@ namespace Mango.Core.Network
                 while (TryReadLine(ref buffer, out ReadOnlySequence<byte> line))
                 {
                     // Process the line.
+                    _logger.LogInformation("take line");
                     ReadOnlyMemory<byte> memory = line.ToArray();
                     _ = Task.Run(() =>
                       {
-                          Handle(memory, stream);
+                          Process(memory, stream);
                       });
                 }
 
