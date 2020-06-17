@@ -1,28 +1,27 @@
 ﻿using Mango.Core.Log;
+using Mango.Core.Network.Abstractions;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Buffers;
-using System.Collections.Generic;
 using System.IO.Pipelines;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Mango.Core.Network.Abstractions
+namespace Mango.Core.Network
 {
     /// <summary>
     /// 以行（\n）为单位处理的TCP服务端
     /// </summary>
-    public abstract class LineProcessTcpServer : IMangoTcpServer
+    public abstract class LineAbstractTcpServer : IMangoTcpServer
     {
-        private readonly ILogger<LineProcessTcpServer> _logger;
+        private readonly ILogger<LineAbstractTcpServer> _logger;
 
-        public LineProcessTcpServer(ILogger<LineProcessTcpServer> logger)
+        public LineAbstractTcpServer(ILogger<LineAbstractTcpServer> logger)
         {
             if(logger == null)
             {
-                _logger = LoggerHelper.Create<LineProcessTcpServer>();
+                _logger = LoggerHelper.Create<LineAbstractTcpServer>();
             }
             _logger = logger;
         }
