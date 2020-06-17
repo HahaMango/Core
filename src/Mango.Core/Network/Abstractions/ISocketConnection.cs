@@ -8,6 +8,7 @@ namespace Mango.Core.Network.Abstractions
     /// <summary>
     /// 套接字连接接口
     /// </summary>
+    [Obsolete]
     public interface ISocketConnection
     {
         /// <summary>
