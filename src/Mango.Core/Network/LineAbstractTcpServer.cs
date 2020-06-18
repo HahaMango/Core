@@ -72,7 +72,7 @@ namespace Mango.Core.Network
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public abstract Task<ReadOnlyMemory<byte>> Handle(ReadOnlyMemory<byte> input);
+        public abstract ValueTask<Memory<byte>> Handle(ReadOnlyMemory<byte> input);
 
         #region 辅助函数
 
@@ -85,9 +85,13 @@ namespace Mango.Core.Network
         private async Task Process(ReadOnlyMemory<byte> data, NetworkStream stream)
         {
             var response = await Handle(data);
+            byte[] result = new byte[response.Length + 1];
+            response.CopyTo(result);
+            result[result.Length - 1] = 10;
+            //加锁确保一条完整消息的发送
             lock (_lock)
             {
-                stream.Write(response.ToArray(), 0, response.Length);
+                stream.Write(result, 0, result.Length);
                 stream.Flush();
             }
         }
