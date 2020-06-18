@@ -10,6 +10,7 @@ namespace Mango.Core.Network
     /// <summary>
     /// 
     /// </summary>
+    [Obsolete]
     public class SingletonSocketConnection : ISocketConnection
     {
         private static SingletonSocketConnection _socketConnection;

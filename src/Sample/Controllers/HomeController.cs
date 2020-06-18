@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Mango.Core.Network;
+using Microsoft.AspNetCore.Mvc;
+using Sample.Models;
+using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Mango.Core.HttpService;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Sample.Models;
-using Mango.Core.Network;
 
 namespace Sample.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly NetworkTransport _networkTransport;
 
-        public HomeController()
+        public HomeController(NetworkTransport networkTransport)
         {
+            _networkTransport = networkTransport;
         }
 
         public async Task<IActionResult> Index()
@@ -26,11 +22,11 @@ namespace Sample.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Privacy()
+        public async Task<string> Privacy()
         {
-            NetworkTransport nt = new NetworkTransport(SingletonSocketConnection.Instance());
-            await nt.SendBytesAsync(new ReadOnlyMemory<byte>());
-            return View();
+            var result = await _networkTransport.SendBytesAsync(Encoding.ASCII.GetBytes("hello world"));
+            var s = Encoding.ASCII.GetString(result);
+            return s;
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
