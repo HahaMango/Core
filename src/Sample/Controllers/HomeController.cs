@@ -1,4 +1,5 @@
 ﻿using Mango.Core.Network;
+using Mango.Core.Network.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Sample.Models;
 using System;
@@ -10,11 +11,11 @@ namespace Sample.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly NetworkTransport _networkTransport;
+        private readonly IMangoTcpClient _client;
 
-        public HomeController(NetworkTransport networkTransport)
+        public HomeController(IMangoTcpClient client)
         {
-            _networkTransport = networkTransport;
+            _client = client;
         }
 
         public async Task<IActionResult> Index()
@@ -24,8 +25,8 @@ namespace Sample.Controllers
 
         public async Task<string> Privacy()
         {
-            var result = await _networkTransport.SendBytesAsync(Encoding.ASCII.GetBytes("hello world"));
-            var s = Encoding.ASCII.GetString(result);
+            var result = await _client.TakeResponseAsync(Encoding.ASCII.GetBytes("hello world"));
+            var s = Encoding.ASCII.GetString(result.Span);
             return s;
         }
 

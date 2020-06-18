@@ -22,7 +22,15 @@ namespace Mango.Core.Network
         /// </summary>
         private readonly object _lock = new object();
 
+        /// <summary>
+        /// 日志
+        /// </summary>
         private readonly ILogger<LineAbstractTcpServer> _logger;
+
+        /// <summary>
+        /// 套接字
+        /// </summary>
+        private Socket _socket;
 
         /// <summary>
         /// 创建行处理TCP服务端
@@ -41,6 +49,7 @@ namespace Mango.Core.Network
             if(logger == null)
             {
                 _logger = LoggerHelper.Create<LineAbstractTcpServer>();
+                return;
             }
             _logger = logger;
         }
@@ -53,16 +62,16 @@ namespace Mango.Core.Network
         /// <returns></returns>
         public async Task Start(IPAddress address, int port)
         {
-            var listenSocket = new Socket(SocketType.Stream, ProtocolType.Tcp);
-            listenSocket.Bind(new IPEndPoint(address, port));
+            _socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
+            _socket.Bind(new IPEndPoint(address, port));
 
             _logger.LogInformation($"start listen to {address}:{port}");
 
-            listenSocket.Listen(120);
+            _socket.Listen(120);
 
             while (true)
             {
-                var socket = await listenSocket.AcceptAsync();
+                var socket = await _socket.AcceptAsync();
                 _ = ProcessLinesAsync(socket);
             }
         }
@@ -108,6 +117,7 @@ namespace Mango.Core.Network
             // Create a PipeReader over the network stream
             var stream = new NetworkStream(socket);
             var reader = PipeReader.Create(stream);
+            var writer = PipeWriter.Create(stream);
 
             while (true)
             {

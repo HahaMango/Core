@@ -7,6 +7,7 @@ using Mango.Core.Authentication.Extension;
 using Mango.Core.Extension;
 using Mango.Core.HttpService;
 using Mango.Core.Network;
+using Mango.Core.Network.Abstractions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,8 +32,14 @@ namespace Sample
         {
             services.AddControllersWithViews();
 
-            NetworkTransport nt = new NetworkTransport(SingletonSocketConnection.Instance());
-            services.AddSingleton(nt);
+            var tcp = new HandleBusinessTcpServer<DataPackage>();
+            _ = Task.Run(() =>
+              {
+                  tcp.Start(new System.Net.IPAddress(new byte[] { 127, 0, 0, 1 }), 8087);
+              });
+
+            var client = new LineTcpClient<DataPackage>(new System.Net.IPAddress(new byte[] { 127, 0, 0, 1 }), 8087);
+            services.AddSingleton<IMangoTcpClient>(client);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
