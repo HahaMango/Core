@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Mango.Core.Network.Abstractions;
+using System;
 using System.Threading.Tasks;
 
 namespace Mango.Core.Network
@@ -10,10 +9,9 @@ namespace Mango.Core.Network
     {
         protected override async ValueTask<Memory<byte>> HandleBusiness(ReadOnlyMemory<byte> input)
         {
-            var s = Encoding.UTF8.GetString(input.ToArray());
-            s += new Random().Next();
-            var r = Encoding.UTF8.GetBytes(s);
-            return await Task.FromResult(r);
+            //var s = Encoding.UTF8.GetString(input.ToArray());
+            //var r = Encoding.UTF8.GetBytes(s);
+            return await Task.FromResult(input.ToArray());
         }
     }
 }

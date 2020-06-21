@@ -166,7 +166,7 @@ namespace Mango.Core.Network
         {
             if (!_socket.Connected)
             {
-                _logger.LogInformation("start connect...");
+                _logger.LogInformation($"start connect to server {_endpoint.Address}:{_endpoint.Port}...");
                 _socket.Connect(_endpoint);
                 return true;
             }

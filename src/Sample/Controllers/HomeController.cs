@@ -23,9 +23,9 @@ namespace Sample.Controllers
             return View();
         }
 
-        public async Task<string> Privacy()
+        public async Task<string> Privacy(string param)
         {
-            var result = await _client.TakeResponseAsync(Encoding.ASCII.GetBytes("hello world"));
+            var result = await _client.TakeResponseAsync(Encoding.ASCII.GetBytes(param));
             var s = Encoding.ASCII.GetString(result.Span);
             return s;
         }

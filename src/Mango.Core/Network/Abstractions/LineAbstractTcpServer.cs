@@ -8,7 +8,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
-namespace Mango.Core.Network
+namespace Mango.Core.Network.Abstractions
 {
     /// <summary>
     /// 以行（\n）为单位处理的TCP服务端
@@ -25,7 +25,7 @@ namespace Mango.Core.Network
         /// <summary>
         /// 日志
         /// </summary>
-        private readonly ILogger<LineAbstractTcpServer> _logger;
+        protected readonly ILogger<LineAbstractTcpServer> _logger;
 
         /// <summary>
         /// 套接字
@@ -65,7 +65,7 @@ namespace Mango.Core.Network
             _socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
             _socket.Bind(new IPEndPoint(address, port));
 
-            _logger.LogInformation($"start listen to {address}:{port}");
+            _logger.LogInformation($"start TCP listen to {address}:{port}");
 
             _socket.Listen(120);
 
@@ -93,6 +93,7 @@ namespace Mango.Core.Network
         /// <returns></returns>
         private async Task Process(ReadOnlyMemory<byte> data, NetworkStream stream)
         {
+            _logger.LogInformation($"[{DateTime.Now}]: start process ...");
             var response = await Handle(data);
             byte[] result = new byte[response.Length + 1];
             response.CopyTo(result);
@@ -127,7 +128,7 @@ namespace Mango.Core.Network
                 while (TryReadLine(ref buffer, out ReadOnlySequence<byte> line))
                 {
                     // Process the line.
-                    _logger.LogInformation("take line");
+                    _logger.LogInformation($"[{DateTime.Now}]: take line...");
                     ReadOnlyMemory<byte> memory = line.ToArray();
                     _ = Task.Run(() =>
                       {
