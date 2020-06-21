@@ -1,6 +1,6 @@
 ﻿using Mango.Core.KeyGenerator;
 using Mango.Core.KeyGenerator.Abstractions;
-using Mango.Core.Log;
+using Mango.Core.Logger;
 using Mango.Core.Network.Abstractions;
 using Mango.Core.Serialization.Extension;
 using Microsoft.AspNetCore.Http;

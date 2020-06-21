@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Rpc\" />
+    <Folder Include="Rpc\Extension\" />
   </ItemGroup>
 
 </Project>

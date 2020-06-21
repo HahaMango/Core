@@ -1,4 +1,4 @@
-﻿using Mango.Core.Log;
+﻿using Mango.Core.Logger;
 using Mango.Core.Network.Abstractions;
 using Microsoft.Extensions.Logging;
 using System;
