@@ -133,12 +133,11 @@ namespace Mango.Core.Network
         {
             Connect();
             var stream = GetStream();
-            Task.Run(Revice);
             var id = _keyGenerator.GetKey();
             var package = new T();
             package.Data = sendData;
             package.Id = id;
-            var s = Encoding.UTF8.GetBytes(package.ToJson() + "\n");
+            var s = Encoding.Unicode.GetBytes(package.ToJson() + "\n");
             lock (_lock)
             {
                 stream.Write(s, 0, s.Length);
@@ -152,11 +151,11 @@ namespace Mango.Core.Network
             return result.Data;
         }
 
-        /// <summary>
-        /// 发送字节序列并等待响应
-        /// </summary>
-        /// <param name="sendData"></param>
-        /// <returns></returns>
+       /// <summary>
+       /// 发送字节序列并等待响应
+       /// </summary>
+       /// <param name="sendData"></param>
+       /// <returns></returns>
         public async Task<Memory<byte>> TakeResponseAsync(ReadOnlyMemory<byte> sendData)
         {
             return await TakeResponseAsync(sendData);
@@ -184,6 +183,7 @@ namespace Mango.Core.Network
                 return _stream;
             }
             _stream = new NetworkStream(_socket);
+            Task.Run(Revice);
             return _stream;
         }
 
@@ -204,7 +204,7 @@ namespace Mango.Core.Network
                     while (TryReadLine(ref buffer, out ReadOnlySequence<byte> line))
                     {
                         // Process the line.
-                        var str = Encoding.ASCII.GetString(line.ToArray());
+                        var str = Encoding.Unicode.GetString(line.ToArray());
                         _bcol.Add(await str.ToObjectAsync<T>());
                     }
 
@@ -224,7 +224,11 @@ namespace Mango.Core.Network
             catch (System.Exception ex)
             {
                 //服务端关闭触发异常
-                Console.WriteLine(ex.Message);
+                _logger.LogError($"[{DateTime.Now}: 连接异常 {ex.Message}]");
+                if(_stream != null && _socket.Connected)
+                {
+                    _ = Task.Run(Revice);
+                }
             }
         }
 

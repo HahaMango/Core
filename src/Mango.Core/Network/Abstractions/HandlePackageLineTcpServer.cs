@@ -17,14 +17,14 @@ namespace Mango.Core.Network.Abstractions
 
         public override async ValueTask<Memory<byte>> Handle(ReadOnlyMemory<byte> input)
         {
-            var requestString = Encoding.UTF8.GetString(input.ToArray());
+            var requestString = Encoding.Unicode.GetString(input.ToArray());
             var jsonObject = await requestString.ToObjectAsync<T>();
             _logger.LogInformation($"[{DateTime.Now}][id:{jsonObject.Id}]: start handle...]");
             var businessResult = await HandleBusiness(jsonObject.Data);
             var response = new T();
             response.Id = jsonObject.Id;
             response.Data = businessResult.ToArray();
-            return Encoding.UTF8.GetBytes(response.ToJson());
+            return Encoding.Unicode.GetBytes(response.ToJson());
         }
 
         protected abstract ValueTask<Memory<byte>> HandleBusiness(ReadOnlyMemory<byte> input);

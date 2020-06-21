@@ -25,8 +25,8 @@ namespace Sample.Controllers
 
         public async Task<string> Privacy(string param)
         {
-            var result = await _client.TakeResponseAsync(Encoding.ASCII.GetBytes(param));
-            var s = Encoding.ASCII.GetString(result.Span);
+            var result = await _client.TakeResponseAsync(Encoding.UTF8.GetBytes(param));
+            var s = Encoding.UTF8.GetString(result.Span);
             return s;
         }
 
