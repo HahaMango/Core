@@ -1,5 +1,6 @@
 ﻿using Mango.Core.Network;
 using Mango.Core.Network.Abstractions;
+using Mango.Core.Rpc.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Sample.Models;
 using System;
@@ -23,11 +24,10 @@ namespace Sample.Controllers
             return View();
         }
 
-        public async Task<string> Privacy(string param)
+        public async Task<IActionResult> Privacy()
         {
-            var result = await _client.TakeResponseAsync(Encoding.UTF8.GetBytes(param));
-            var s = Encoding.UTF8.GetString(result.Span);
-            return s;
+            MyTest.Test();
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

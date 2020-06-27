@@ -8,6 +8,7 @@ namespace Mango.Core.Rpc.Abstractions.DataStructure
     /// <summary>
     /// Rpc方法请求体
     /// </summary>
+    [Serializable]
     public class MethodRpcRequest
     {
         /// <summary>
