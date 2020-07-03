@@ -14,7 +14,7 @@ namespace Mango.Core.Rpc
     /// <summary>
     /// RPC请求客户端
     /// </summary>
-    public class RpcClient : IRpcClient
+    internal class RpcClient : IRpcClient
     {
         private readonly IMangoTcpClient _tcpClient;
 

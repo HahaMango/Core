@@ -16,7 +16,7 @@ namespace Mango.Core.Rpc
     /// <summary>
     /// RPC服务器
     /// </summary>
-    public class RpcServer : HandlePackageLineTcpServer<DataPackage>, IRpcServer
+    internal class RpcServer : HandlePackageLineTcpServer<DataPackage>, IRpcServer
     {
         private readonly IServiceProvider _serviceProvider;
 
