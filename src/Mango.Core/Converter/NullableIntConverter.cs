@@ -34,6 +34,10 @@ namespace Mango.Core.Converter
                     return result2;
                 }
             }
+            else
+            {
+                return reader.GetInt32();
+            }
             return default;
         }
 
