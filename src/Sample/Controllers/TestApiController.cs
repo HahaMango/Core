@@ -13,13 +13,9 @@ namespace Sample.Controllers
     public class TestApiController : ControllerBase
     {
         [HttpPost("api/test/get")]
-        public async Task<ApiResult> RetrunJson([FromBody]TestJsonEntity testJsonEntity)
+        public async Task<TestJsonEntity> RetrunJson([FromBody]TestJsonEntity testJsonEntity)
         {
-            return new ApiResult
-            {
-                Code = Mango.Core.Enums.Code.Ok,
-                Message = "消息"
-            };
+            return testJsonEntity;
         }
     }
 }

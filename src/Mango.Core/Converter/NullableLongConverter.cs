@@ -51,7 +51,7 @@ namespace Mango.Core.Converter
         {
             if (value.HasValue)
             {
-                writer.WriteStringValue(value.ToString());
+                writer.WriteStringValue(value.Value.ToString());
             }
             else
             {

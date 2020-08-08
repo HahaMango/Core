@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Mango.Core.Authentication.Extension;
+using Mango.Core.Converter;
 using Mango.Core.Extension;
 using Mango.Core.HttpService;
 using Mango.Core.Network;
@@ -30,7 +31,7 @@ namespace Sample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new IntConverter()));
 
             var tcp = new HandleBusinessTcpServer<DataPackage>();
             _ = Task.Run(() =>
