@@ -1,4 +1,4 @@
-﻿using Mango.Core.Log;
+﻿using Mango.Core.Logger;
 using Mango.Core.Network.Abstractions;
 using Microsoft.Extensions.Logging;
 using System;
@@ -8,7 +8,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
-namespace Mango.Core.Network
+namespace Mango.Core.Network.Abstractions
 {
     /// <summary>
     /// 以行（\n）为单位处理的TCP服务端
@@ -22,7 +22,15 @@ namespace Mango.Core.Network
         /// </summary>
         private readonly object _lock = new object();
 
-        private readonly ILogger<LineAbstractTcpServer> _logger;
+        /// <summary>
+        /// 日志
+        /// </summary>
+        protected readonly ILogger<LineAbstractTcpServer> _logger;
+
+        /// <summary>
+        /// 套接字
+        /// </summary>
+        private Socket _socket;
 
         /// <summary>
         /// 创建行处理TCP服务端
@@ -41,6 +49,7 @@ namespace Mango.Core.Network
             if(logger == null)
             {
                 _logger = LoggerHelper.Create<LineAbstractTcpServer>();
+                return;
             }
             _logger = logger;
         }
@@ -53,16 +62,16 @@ namespace Mango.Core.Network
         /// <returns></returns>
         public async Task Start(IPAddress address, int port)
         {
-            var listenSocket = new Socket(SocketType.Stream, ProtocolType.Tcp);
-            listenSocket.Bind(new IPEndPoint(address, port));
+            _socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
+            _socket.Bind(new IPEndPoint(address, port));
 
-            _logger.LogInformation($"start listen to {address}:{port}");
+            _logger.LogInformation($"start TCP listen to {address}:{port}");
 
-            listenSocket.Listen(120);
+            _socket.Listen(120);
 
             while (true)
             {
-                var socket = await listenSocket.AcceptAsync();
+                var socket = await _socket.AcceptAsync();
                 _ = ProcessLinesAsync(socket);
             }
         }
@@ -84,6 +93,7 @@ namespace Mango.Core.Network
         /// <returns></returns>
         private async Task Process(ReadOnlyMemory<byte> data, NetworkStream stream)
         {
+            _logger.LogInformation($"[{DateTime.Now}]: start process ...");
             var response = await Handle(data);
             byte[] result = new byte[response.Length + 1];
             response.CopyTo(result);
@@ -108,6 +118,7 @@ namespace Mango.Core.Network
             // Create a PipeReader over the network stream
             var stream = new NetworkStream(socket);
             var reader = PipeReader.Create(stream);
+            var writer = PipeWriter.Create(stream);
 
             while (true)
             {
@@ -117,7 +128,7 @@ namespace Mango.Core.Network
                 while (TryReadLine(ref buffer, out ReadOnlySequence<byte> line))
                 {
                     // Process the line.
-                    _logger.LogInformation("take line");
+                    _logger.LogInformation($"[{DateTime.Now}]: take line...");
                     ReadOnlyMemory<byte> memory = line.ToArray();
                     _ = Task.Run(() =>
                       {
