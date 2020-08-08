@@ -26,7 +26,6 @@ namespace Sample.Controllers
 
         public async Task<IActionResult> Privacy()
         {
-            MyTest.Test();
             return View();
         }
 
