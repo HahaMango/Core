@@ -1,5 +1,7 @@
 ﻿using Mango.Core.Authentication.Jwt;
+using Mango.Core.Authentication.Policy;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -65,6 +67,72 @@ namespace Mango.Core.Authentication.Extension
                         }
                     };
                 });
+            return services;
+        }
+
+        /// <summary>
+        /// 添加jwt认证
+        /// 
+        /// 认证issuer，过期时间，签名。不认证Audience
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="options">jwt认证配置</param>
+        /// <returns></returns>
+        public static IServiceCollection AddMangoJwtAuthenticationExceptAudience(this IServiceCollection services, Action<MangoJwtValidationOptions> options)
+        {
+            var jwtOptions = new MangoJwtValidationOptions();
+            options(jwtOptions);
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, o =>
+                {
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.FromMinutes(15),
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = jwtOptions.Issuer,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key))
+                    };
+                });
+            return services;
+        }
+
+        /// <summary>
+        /// 添加jwt认证
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="validationParameters">认证参数配置</param>
+        /// <returns></returns>
+        public static IServiceCollection AddMangoJwtAuthentication(this IServiceCollection services, TokenValidationParameters validationParameters)
+        {
+            var jwtOptions = new MangoJwtValidationOptions();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, o =>
+                {
+                    o.TokenValidationParameters = validationParameters;
+                });
+            return services;
+        }
+
+        /// <summary>
+        /// 添加jwt Audience授权策略
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="policyName">策略名称</param>
+        /// <param name="vaildAudience">有效Audience</param>
+        /// <returns></returns>
+        public static IServiceCollection AddMangoJwtPolicy(this IServiceCollection services ,string policyName, string vaildAudience)
+        {
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(policyName, policy =>
+                    policy.Requirements.Add(new JwtAudienceRequirement(vaildAudience)));
+            });
+
+            services.AddSingleton<IAuthorizationHandler, JwtAudienceHandler>();
+
             return services;
         }
     }
