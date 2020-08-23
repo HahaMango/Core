@@ -120,15 +120,20 @@ namespace Mango.Core.Authentication.Extension
         /// 添加jwt Audience授权策略
         /// </summary>
         /// <param name="services"></param>
-        /// <param name="policyName">策略名称</param>
-        /// <param name="vaildAudience">有效Audience</param>
+        /// <param name="policyNames">策略名称</param>
+        /// <param name="vaildAudiences">有效Aduience</param>
+        /// <param name="options">jwt配置</param>
         /// <returns></returns>
-        public static IServiceCollection AddMangoJwtPolicy(this IServiceCollection services ,string policyName, string vaildAudience)
+        public static IServiceCollection AddMangoJwtPolicy(this IServiceCollection services ,string[] policyNames, string[] vaildAudiences, Action<MangoJwtValidationOptions> options)
         {
-            services.AddAuthorization(options =>
+            services.AddMangoJwtAuthenticationExceptAudience(options);
+            services.AddAuthorization(opt =>
             {
-                options.AddPolicy(policyName, policy =>
-                    policy.Requirements.Add(new JwtAudienceRequirement(vaildAudience)));
+                for (var i = 0; i < policyNames.Length; i++)
+                {
+                    opt.AddPolicy(policyNames[i], policy =>
+                        policy.Requirements.Add(new JwtAudienceRequirement(vaildAudiences[i])));
+                }
             });
 
             services.AddSingleton<IAuthorizationHandler, JwtAudienceHandler>();
