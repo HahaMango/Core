@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Mango.Core.Authentication.Extension
@@ -120,19 +121,18 @@ namespace Mango.Core.Authentication.Extension
         /// 添加jwt Audience授权策略
         /// </summary>
         /// <param name="services"></param>
-        /// <param name="policyNames">策略名称</param>
-        /// <param name="vaildAudiences">有效Aduience</param>
+        /// <param name="policyNames">策略名称和有效audiences键值对</param>
         /// <param name="options">jwt配置</param>
         /// <returns></returns>
-        public static IServiceCollection AddMangoJwtPolicy(this IServiceCollection services ,string[] policyNames, string[] vaildAudiences, Action<MangoJwtValidationOptions> options)
+        public static IServiceCollection AddMangoJwtPolicy(this IServiceCollection services , IDictionary<string,string> policyNames, Action<MangoJwtValidationOptions> options)
         {
             services.AddMangoJwtAuthenticationExceptAudience(options);
-            services.AddAuthorization(opt =>
+            services.AddAuthorizationCore(opt =>
             {
-                for (var i = 0; i < policyNames.Length; i++)
+                foreach(var policyname in policyNames)
                 {
-                    opt.AddPolicy(policyNames[i], policy =>
-                        policy.Requirements.Add(new JwtAudienceRequirement(vaildAudiences[i])));
+                    opt.AddPolicy(policyname.Key, policy =>
+                        policy.Requirements.Add(new JwtAudienceRequirement(policyname.Value)));
                 }
             });
 
