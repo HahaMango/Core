@@ -83,11 +83,11 @@ namespace Mango.Core.Test
                         var logLevel = (LogLevel)invocation.Arguments[0];
                         var eventId = (EventId)invocation.Arguments[1];
                         var state = invocation.Arguments[2];
-                        var exception = (System.Exception?)invocation.Arguments[3];
+                        var exception = (System.Exception)invocation.Arguments[3];
                         var formatter = invocation.Arguments[4];
 
                         var invokeMethod = formatter.GetType().GetMethod("Invoke");
-                        var logMessage = (string?)invokeMethod?.Invoke(formatter, new[] { state, exception });
+                        var logMessage = (string)invokeMethod?.Invoke(formatter, new[] { state, exception });
 
                         _output.WriteLine(logMessage);
                     }));
