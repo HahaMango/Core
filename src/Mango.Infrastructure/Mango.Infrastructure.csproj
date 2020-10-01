@@ -12,8 +12,4 @@
     <RepositoryUrl>https://github.com/HahaMango/Core</RepositoryUrl>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Mango.Core" Version="2.0.17" />
-  </ItemGroup>
-
 </Project>

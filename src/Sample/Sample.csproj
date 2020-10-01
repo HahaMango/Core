@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Mango.Core\Mango.Core.csproj" />
+    <ProjectReference Include="..\Mango.Infrastructure\Mango.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

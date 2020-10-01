@@ -17,8 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Mango.Core\Mango.Core.csproj" />
-    <ProjectReference Include="..\..\src\Mango.EntityFramework\Mango.EntityFramework.csproj" />
-    <ProjectReference Include="..\..\src\Mango.Infrastructure\Mango.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

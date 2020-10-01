@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using Mango.Core.Authentication.Extension;
@@ -9,6 +10,8 @@ using Mango.Core.Extension;
 using Mango.Core.HttpService;
 using Mango.Core.Network;
 using Mango.Core.Network.Abstractions;
+using Mango.Core.Srd.Extension;
+using Mango.Infrastructure.Helper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -44,7 +47,7 @@ namespace Sample
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env , IHostApplicationLifetime lifetime)
         {
             if (env.IsDevelopment())
             {
@@ -69,6 +72,15 @@ namespace Sample
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            //app.RegisterConsulService(lifetime, new Mango.Core.DataStructure.ServiceEntity
+            //{
+            //    ConsulIP = "47.240.42.72",
+            //    ConsulPort = "8500",
+            //    IP = "sd",
+            //    Port = "5001",
+            //    ServiceName = "≤‚ ‘Œﬁ"
+            //});
         }
     }
 }
