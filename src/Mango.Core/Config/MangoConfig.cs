@@ -17,7 +17,7 @@ namespace Mango.Core.Config
         /// </summary>
         /// <param name="host"></param>
         /// <param name="token"></param>
-        public MangoConfig(string host,string token) : base(host, token)
+        public MangoConfig(string host,string token = null) : base(host, token)
         {
 
         }

@@ -27,7 +27,7 @@ namespace Mango.Core.DataStructure
         /// <summary>
         /// JWT密钥
         /// </summary>
-        public string JWTKey { get; set; }
+        public string JwtKey { get; set; }
 
         /// <summary>
         /// JWT有效的域
