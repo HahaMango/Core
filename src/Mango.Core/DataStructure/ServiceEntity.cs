@@ -7,22 +7,12 @@ namespace Mango.Core.DataStructure
     /// <summary>
     /// 代表单个微服务实体信息
     /// </summary>
-    public class ServiceEntity
+    public class MangoService
     {
         /// <summary>
         /// 服务Id
         /// </summary>
         public string Id { get; set; }
-
-        /// <summary>
-        /// consul ip
-        /// </summary>
-        public string ConsulIP { get; set; }
-
-        /// <summary>
-        /// consul端口
-        /// </summary>
-        public string ConsulPort { get; set; }
 
         /// <summary>
         /// 服务名称

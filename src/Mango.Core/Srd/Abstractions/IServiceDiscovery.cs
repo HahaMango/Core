@@ -16,6 +16,6 @@ namespace Mango.Core.Srd.Abstractions
         /// </summary>
         /// <param name="serviceName">服务名称</param>
         /// <returns></returns>
-        Task<ServiceEntity> DiscoveryService(string serviceName);
+        Task<MangoService> DiscoveryService(string serviceName);
     }
 }

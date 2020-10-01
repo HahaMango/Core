@@ -54,7 +54,7 @@ namespace Mango.Core.Srd
         /// </summary>
         /// <param name="service"></param>
         /// <returns></returns>
-        public Task<bool> DeregisterService(ServiceEntity service)
+        public Task<bool> DeregisterService(MangoService service)
         {
             _consulClient.Agent.ServiceDeregister(service.Id).Wait();
             return Task.FromResult(true);
@@ -76,7 +76,7 @@ namespace Mango.Core.Srd
         /// </summary>
         /// <param name="service"></param>
         /// <returns></returns>
-        public Task<bool> RegistrationService(ServiceEntity service)
+        public Task<bool> RegistrationService(MangoService service)
         {
             if(service == null)
             {

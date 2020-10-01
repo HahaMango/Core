@@ -22,7 +22,7 @@ namespace Mango.Core.Srd.Extension
         /// <param name="serviceEntity"></param>
         /// <param name="lifetime"></param>
         /// <returns></returns>
-        public static IApplicationBuilder RegisterConsulService(this IApplicationBuilder app, IServiceRegistration serviceRegistration, ServiceEntity serviceEntity, IHostApplicationLifetime lifetime)
+        public static IApplicationBuilder RegisterConsulService(this IApplicationBuilder app, IServiceRegistration serviceRegistration, MangoService serviceEntity, IHostApplicationLifetime lifetime)
         {
             //服务注册
             serviceRegistration.RegistrationService(serviceEntity);

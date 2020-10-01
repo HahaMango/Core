@@ -16,14 +16,14 @@ namespace Mango.Core.Srd.Abstractions
         /// </summary>
         /// <param name="service"></param>
         /// <returns></returns>
-        Task<bool> RegistrationService(ServiceEntity service);
+        Task<bool> RegistrationService(MangoService service);
 
         /// <summary>
         /// 取消服务注册
         /// </summary>
         /// <param name="service"></param>
         /// <returns></returns>
-        Task<bool> DeregisterService(ServiceEntity service);
+        Task<bool> DeregisterService(MangoService service);
 
         /// <summary>
         /// 取消服务注册（通过服务id）
