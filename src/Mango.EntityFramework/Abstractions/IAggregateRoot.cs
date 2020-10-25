@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mango.Core.EntityFramework.Abstractions
+namespace Mango.EntityFramework.Abstractions
 {
     /// <summary>
-    /// 空接口，标识实体作用
+    /// 聚合根标记接口
     /// </summary>
-    public interface IEntity
+    public interface IAggregateRoot
     {
-
     }
 }

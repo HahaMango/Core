@@ -1,10 +1,9 @@
-﻿using Mango.Core.KeyGenerator;
-using Mango.Core.KeyGenerator.Abstractions;
+﻿using Mango.KeyGenerator;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mango.Core.EntityFramework.BaseEntity
+namespace Mango.EntityFramework.BaseEntity
 {
     /// <summary>
     /// 雪花算法实体

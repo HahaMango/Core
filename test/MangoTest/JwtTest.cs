@@ -1,8 +1,5 @@
 ﻿using Mango.Core.Authentication.Jwt;
-using Mango.Core.EntityFramework.BaseEntity;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Mango.EntityFramework.BaseEntity;
 using Xunit;
 
 namespace MangoTest

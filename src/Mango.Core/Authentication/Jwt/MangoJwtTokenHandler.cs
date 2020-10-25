@@ -1,6 +1,4 @@
-﻿using Mango.Core.EntityFramework.Abstractions;
-using Mango.Core.EntityFramework.BaseEntity;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -47,15 +45,23 @@ namespace Mango.Core.Authentication.Jwt
         /// <param name="issuer">颁发机构</param>
         /// <returns></returns>
         public string IssuedToken<TUser,TKey>(TUser user, string issuer = null,string audience = null, params Claim[] otherClaims)
-            where TUser : IBaseEntity<TKey>
         {
+            TKey a = default;
+            #region 获取实体id
+            var userType = user.GetType();
+            var userIdProp = userType.GetProperty("Id", a.GetType());
+            if(userIdProp == null)
+            {
+                throw new InvalidOperationException("实体缺少ID属性");
+            }
+            var userId = userIdProp.GetValue(user);
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier,user.Id.ToString())
+                new Claim(ClaimTypes.NameIdentifier,userId.ToString())
             };
+            #endregion
 
             #region 如果实体类有UserName字段
-            var userType = user.GetType();
             var userProp = userType.GetProperty("UserName", typeof(string));
             if (userProp != null)
             {
@@ -98,7 +104,6 @@ namespace Mango.Core.Authentication.Jwt
         /// <param name="otherClaims"></param>
         /// <returns></returns>
         public string IssuedToken<TUser, TKey>(TUser user,params Claim[] otherClaims)
-            where TUser : IBaseEntity<TKey>
         {
             return IssuedToken<TUser, TKey>(user: user, issuer: null, audience: null, otherClaims: otherClaims);
         }
@@ -111,7 +116,6 @@ namespace Mango.Core.Authentication.Jwt
         /// <param name="user"></param>
         /// <returns></returns>
         public string IssuedToken<TUser, TKey>(TUser user)
-            where TUser : IBaseEntity<TKey>
         {
             return IssuedToken<TUser, TKey>(user, new Claim[0]);
         }
@@ -123,7 +127,6 @@ namespace Mango.Core.Authentication.Jwt
         /// <param name="user"></param>
         /// <returns></returns>
         public string IssuedToken<TUser>(TUser user)
-            where TUser : Entity
         {
             return IssuedToken<TUser, long>(user);
         }

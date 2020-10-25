@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mango.Core.EntityFramework.Abstractions
+namespace Mango.EntityFramework.Abstractions
 {
     /// <summary>
     /// 实体基础接口

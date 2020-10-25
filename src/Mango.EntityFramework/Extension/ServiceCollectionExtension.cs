@@ -1,6 +1,4 @@
-﻿using Mango.Core.KeyGenerator;
-using Mango.Core.KeyGenerator.Abstractions;
-using Mango.EntityFramework.Abstractions;
+﻿using Mango.EntityFramework.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

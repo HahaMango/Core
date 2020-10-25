@@ -1,4 +1,4 @@
-﻿using Mango.Core.EntityFramework.Abstractions;
+﻿using Mango.EntityFramework.Abstractions;
 using Mango.EntityFramework.Abstractions.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;

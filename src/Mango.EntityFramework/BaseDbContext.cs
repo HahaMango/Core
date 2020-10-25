@@ -1,4 +1,4 @@
-﻿using Mango.Core.EntityFramework.BaseEntity;
+﻿using Mango.EntityFramework.BaseEntity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyModel;
 using System.Collections.Generic;
