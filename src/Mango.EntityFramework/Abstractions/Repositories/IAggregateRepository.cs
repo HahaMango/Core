@@ -27,6 +27,13 @@ namespace Mango.EntityFramework.Abstractions.Repositories
         Task RemoveAsync(T o);
 
         /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="o"></param>
+        /// <returns></returns>
+        Task UpdateAsync(T o);
+
+        /// <summary>
         /// 查询聚合根
         /// </summary>
         /// <param name="id"></param>
