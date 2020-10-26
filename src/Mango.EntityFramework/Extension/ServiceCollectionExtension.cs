@@ -10,6 +10,7 @@ namespace Mango.EntityFramework.Extension
         /// 添加Mango DB上下文
         /// </summary>
         /// <param name="services"></param>
+        /// <param name="connnectionString"></param>
         /// <returns></returns>
         public static IServiceCollection AddMangoDbContext<TDbContext,TEFContextWork>(this IServiceCollection services,string connnectionString) 
             where TDbContext : BaseDbContext
@@ -20,6 +21,22 @@ namespace Mango.EntityFramework.Extension
                 config.UseMySql(connnectionString);
             });
             services.AddScoped<IEfContextWork, TEFContextWork>();
+            return services;
+        }
+
+        /// <summary>
+        /// 添加Mango DB上下文
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="connnectionString"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddMangoDbContext<TDbContext>(this IServiceCollection services, string connnectionString)
+            where TDbContext : BaseDbContext
+        {
+            services.AddDbContext<TDbContext>(config =>
+            {
+                config.UseMySql(connnectionString);
+            });
             return services;
         }
     }

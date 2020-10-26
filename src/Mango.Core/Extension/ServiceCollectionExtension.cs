@@ -1,6 +1,7 @@
 ﻿using Mango.Core.AutoMapper;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-
+using System;
 
 namespace Mango.Core.Extension
 {
@@ -19,6 +20,18 @@ namespace Mango.Core.Extension
             var mapper = new MangoMapper();
             services.AddSingleton<IMapper>(mapper);
             MangoMapperExtension.SetMapper(mapper);
+            return services;
+        }
+
+        /// <summary>
+        /// 添加MediatR
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddMediatR(this IServiceCollection services)
+        {
+            var ass = AppDomain.CurrentDomain.GetAssemblies();
+            services.AddMediatR(ass);
             return services;
         }
     }
