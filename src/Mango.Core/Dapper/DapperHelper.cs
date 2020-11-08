@@ -1,8 +1,8 @@
 ﻿using Dapper;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Text;
+using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Mango.Core.Dapper
@@ -10,17 +10,24 @@ namespace Mango.Core.Dapper
     /// <summary>
     /// Dapper帮助类
     /// </summary>
-    public class DapperHelper
+    public class DapperHelper : IDapperHelper
     {
         private readonly string _connectionString;
+        private readonly Type _databaseType;
 
         /// <summary>
         /// 使用连接字符串初始化
         /// </summary>
         /// <param name="connectionString"></param>
-        public DapperHelper(string connectionString)
+        /// <param name="databaseType"></param>
+        public DapperHelper(string connectionString,Type databaseType)
         {
+            if(databaseType == null)
+            {
+                throw new ArgumentNullException(nameof(databaseType));
+            }
             _connectionString = connectionString;
+            _databaseType = databaseType;
         }
 
         /// <summary>
@@ -32,7 +39,7 @@ namespace Mango.Core.Dapper
         /// <returns></returns>
         public IEnumerable<T> Query<T>(string sql, object param = null)
         {
-            using (var cn = new SqlConnection(_connectionString))
+            using (var cn = InstantiateConnection())
             {
                 return cn.Query<T>(sql, param);
             }
@@ -47,7 +54,7 @@ namespace Mango.Core.Dapper
         /// <returns></returns>
         public T QueryFirst<T>(string sql, object param = null)
         {
-            using (var cn = new SqlConnection(_connectionString))
+            using (var cn = InstantiateConnection())
             {
                 return cn.QueryFirst<T>(sql, param);
             }
@@ -62,7 +69,7 @@ namespace Mango.Core.Dapper
         /// <returns></returns>
         public T QueryFirstOrDefault<T>(string sql, object param = null)
         {
-            using (var cn = new SqlConnection(_connectionString))
+            using (var cn = InstantiateConnection())
             {
                 return cn.QueryFirstOrDefault<T>(sql, param);
             }
@@ -75,11 +82,11 @@ namespace Mango.Core.Dapper
         /// <param name="sql"></param>
         /// <param name="param"></param>
         /// <returns></returns>
-        public Task<IEnumerable<T>> QueryAsync<T>(string sql, object param = null)
+        public async Task<IEnumerable<T>> QueryAsync<T>(string sql, object param = null)
         {
-            using (var cn = new SqlConnection(_connectionString))
+            using (var cn = InstantiateConnection())
             {
-                return cn.QueryAsync<T>(sql, param);
+                return await cn.QueryAsync<T>(sql, param);
             }
         }
 
@@ -90,11 +97,11 @@ namespace Mango.Core.Dapper
         /// <param name="sql"></param>
         /// <param name="param"></param>
         /// <returns></returns>
-        public Task<T> QueryFirstAsync<T>(string sql, object param = null)
+        public async Task<T> QueryFirstAsync<T>(string sql, object param = null)
         {
-            using (var cn = new SqlConnection(_connectionString))
+            using (var cn = InstantiateConnection())
             {
-                return cn.QueryFirstAsync<T>(sql, param);
+                return await cn.QueryFirstAsync<T>(sql, param);
             }
         }
 
@@ -105,12 +112,27 @@ namespace Mango.Core.Dapper
         /// <param name="sql"></param>
         /// <param name="param"></param>
         /// <returns></returns>
-        public Task<T> QueryFirstOrDefaultAsync<T>(string sql, object param = null)
+        public async Task<T> QueryFirstOrDefaultAsync<T>(string sql, object param = null)
         {
-            using (var cn = new SqlConnection(_connectionString))
+            using (var cn = InstantiateConnection())
             {
-                return cn.QueryFirstOrDefaultAsync<T>(sql, param);
+                return await cn.QueryFirstOrDefaultAsync<T>(sql, param);
             }
+        }
+
+        private IDbConnection InstantiateConnection()
+        {
+            var i = _databaseType.GetInterfaces();
+            if(!i.Any(item => item.Name == typeof(IDbConnection).Name))
+            {
+                throw new InvalidOperationException($"类型{_databaseType.Name}不实现IDbConnection接口");
+            }
+            var ci = _databaseType.GetConstructor(new Type[] { typeof(string) });
+            if(ci == null)
+            {
+                throw new NullReferenceException($"类型{_databaseType.Name}不存在一个string的形参构造函数");
+            }
+            return (IDbConnection)ci.Invoke(new object[] { _connectionString });
         }
     }
 }
