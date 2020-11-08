@@ -17,7 +17,7 @@ namespace Mango.Core.Dapper.Extension
         /// <param name="connectionString">连接字符串</param>
         /// <param name="databaseType">数据库IDbConnection类型</param>
         /// <returns></returns>
-        public static IServiceCollection AddDapperUseMysql(this IServiceCollection services, string connectionString,Type databaseType)
+        public static IServiceCollection AddDapper(this IServiceCollection services, string connectionString,Type databaseType)
         {
             var dh = new DapperHelper(connectionString, databaseType);
             services.AddSingleton<IDapperHelper>(dh);
