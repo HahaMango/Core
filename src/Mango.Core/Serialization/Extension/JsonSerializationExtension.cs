@@ -169,5 +169,37 @@ namespace Mango.Core.Serialization.Extension
             var o = JsonSerializer.Deserialize<T>(source, options);
             return await Task.FromResult(o);
         }
+
+        /// <summary>
+        /// json字符串反序列化为对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static T ToObject<T>(this string source)
+            where T : class, new()
+        {
+            return (T)JsonSerializer.Deserialize<T>(source);
+        }
+
+        /// <summary>
+        /// 通过配置，json字符串反序列化对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public static T ToObject<T>(this string source, JsonSerializerOptions options)
+        {
+            if (string.IsNullOrEmpty(source))
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+            return JsonSerializer.Deserialize<T>(source, options);
+        }
     }
 }
