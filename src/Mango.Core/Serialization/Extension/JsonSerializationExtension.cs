@@ -56,7 +56,7 @@ namespace Mango.Core.Serialization.Extension
         /// <param name="o"></param>
         /// <returns></returns>
         public static string ToJsonUtf8<T>(this T o)
-            where T :class
+            where T : class
         {
             return o.ToJsonUtf8<T>(_options);
         }
@@ -75,12 +75,12 @@ namespace Mango.Core.Serialization.Extension
             {
                 throw new ArgumentNullException(nameof(o));
             }
-            if(options == null)
+            if (options == null)
             {
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return JsonSerializer.Serialize<T>(o,options);
+            return JsonSerializer.Serialize<T>(o, options);
         }
 
         /// <summary>
@@ -89,19 +89,19 @@ namespace Mango.Core.Serialization.Extension
         /// <typeparam name="T"></typeparam>
         /// <param name="o"></param>
         /// <returns></returns>
-        public static string ToJsonUtf8<T>(this T o,JsonSerializerOptions options)
+        public static string ToJsonUtf8<T>(this T o, JsonSerializerOptions options)
             where T : class
         {
             if (o == null)
             {
                 throw new ArgumentNullException(nameof(o));
             }
-            if(options == null)
+            if (options == null)
             {
                 throw new ArgumentNullException(nameof(options));
             }
 
-            var utf8Bytes = JsonSerializer.SerializeToUtf8Bytes<T>(o,options);
+            var utf8Bytes = JsonSerializer.SerializeToUtf8Bytes<T>(o, options);
             return Encoding.UTF8.GetString(utf8Bytes);
         }
 
@@ -111,14 +111,14 @@ namespace Mango.Core.Serialization.Extension
         /// <typeparam name="T"></typeparam>
         /// <param name="o"></param>
         /// <returns></returns>
-        public static async Task<string> ToJsonAsync<T>(this T o,JsonSerializerOptions options)
+        public static async Task<string> ToJsonAsync<T>(this T o, JsonSerializerOptions options)
             where T : class
         {
             if (o == null)
             {
                 throw new ArgumentNullException(nameof(o));
             }
-            if(options == null)
+            if (options == null)
             {
                 throw new ArgumentNullException(nameof(options));
             }
@@ -135,7 +135,7 @@ namespace Mango.Core.Serialization.Extension
 
             return json;
         }
-        
+
         /// <summary>
         /// json字符串反序列化为对象
         /// </summary>
@@ -143,7 +143,7 @@ namespace Mango.Core.Serialization.Extension
         /// <param name="source"></param>
         /// <returns></returns>
         public static async Task<T> ToObjectAsync<T>(this string source)
-            where T :class,new()
+            where T : class, new()
         {
             return await ToObjectAsync<T>(source, _options);
         }
@@ -155,14 +155,14 @@ namespace Mango.Core.Serialization.Extension
         /// <param name="source"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public static async Task<T> ToObjectAsync<T>(this string source ,JsonSerializerOptions options)
+        public static async Task<T> ToObjectAsync<T>(this string source, JsonSerializerOptions options)
             where T : class, new()
         {
             if (string.IsNullOrEmpty(source))
             {
                 throw new ArgumentNullException(nameof(source));
             }
-            if(options == null)
+            if (options == null)
             {
                 throw new ArgumentNullException(nameof(options));
             }
@@ -190,6 +190,7 @@ namespace Mango.Core.Serialization.Extension
         /// <param name="options"></param>
         /// <returns></returns>
         public static T ToObject<T>(this string source, JsonSerializerOptions options)
+            where T : class, new()
         {
             if (string.IsNullOrEmpty(source))
             {
@@ -200,6 +201,37 @@ namespace Mango.Core.Serialization.Extension
                 throw new ArgumentNullException(nameof(options));
             }
             return JsonSerializer.Deserialize<T>(source, options);
+        }
+
+        /// <summary>
+        /// json字符串反序列化为对象
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static object ToObject(this string source, Type type)
+        {
+            return JsonSerializer.Deserialize(source, type);
+        }
+
+        /// <summary>
+        /// 通过配置，json字符串反序列化对象
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="options"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static object ToObject(this string source, Type type, JsonSerializerOptions options)
+        {
+            if (string.IsNullOrEmpty(source))
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+            return JsonSerializer.Deserialize(source, type, options);
         }
     }
 }
