@@ -14,13 +14,13 @@ namespace Mango.EntityFramework.Extension
         /// <returns></returns>
         public static IServiceCollection AddMangoDbContext<TDbContext,TEFContextWork>(this IServiceCollection services,string connnectionString) 
             where TDbContext : BaseDbContext
-            where TEFContextWork : class, IEfContextWork
+            where TEFContextWork : class, IUnitOfWork
         {
             services.AddDbContext<TDbContext>(config =>
             {
                 config.UseMySql(connnectionString);
             });
-            services.AddScoped<IEfContextWork, TEFContextWork>();
+            services.AddScoped<IUnitOfWork, TEFContextWork>();
             return services;
         }
 

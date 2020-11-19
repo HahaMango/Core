@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Mango.Core.Dapper
@@ -81,12 +82,15 @@ namespace Mango.Core.Dapper
         /// <typeparam name="T"></typeparam>
         /// <param name="sql"></param>
         /// <param name="param"></param>
+        /// <param name="commandFlags"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<T>> QueryAsync<T>(string sql, object param = null)
+        public async Task<IEnumerable<T>> QueryAsync<T>(string sql, object param = null, CommandFlags commandFlags = CommandFlags.None, CancellationToken cancellationToken = default)
         {
+            var command = new CommandDefinition(sql, param, null, null, null, commandFlags, cancellationToken);
             using (var cn = InstantiateConnection())
             {
-                return await cn.QueryAsync<T>(sql, param);
+                return await cn.QueryAsync<T>(command);
             }
         }
 
@@ -96,12 +100,15 @@ namespace Mango.Core.Dapper
         /// <typeparam name="T"></typeparam>
         /// <param name="sql"></param>
         /// <param name="param"></param>
+        /// <param name="commandFlags"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<T> QueryFirstAsync<T>(string sql, object param = null)
+        public async Task<T> QueryFirstAsync<T>(string sql, object param = null, CommandFlags commandFlags = CommandFlags.None, CancellationToken cancellationToken = default)
         {
+            var command = new CommandDefinition(sql, param, null, null, null, commandFlags, cancellationToken);
             using (var cn = InstantiateConnection())
             {
-                return await cn.QueryFirstAsync<T>(sql, param);
+                return await cn.QueryFirstAsync<T>(command);
             }
         }
 
@@ -111,12 +118,15 @@ namespace Mango.Core.Dapper
         /// <typeparam name="T"></typeparam>
         /// <param name="sql"></param>
         /// <param name="param"></param>
+        /// <param name="commandFlags"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<T> QueryFirstOrDefaultAsync<T>(string sql, object param = null)
+        public async Task<T> QueryFirstOrDefaultAsync<T>(string sql, object param = null, CommandFlags commandFlags = CommandFlags.None, CancellationToken cancellationToken = default)
         {
+            var command = new CommandDefinition(sql, param, null, null, null, commandFlags, cancellationToken);
             using (var cn = InstantiateConnection())
             {
-                return await cn.QueryFirstOrDefaultAsync<T>(sql, param);
+                return await cn.QueryFirstOrDefaultAsync<T>(command);
             }
         }
 
