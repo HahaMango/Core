@@ -40,7 +40,10 @@ namespace Mango.Core.Cache.Extension
             }
             var client = new RedisClient(op.ConnectionString, csb);
             client.Serialize = obj => obj.ToJson();
-            client.Deserialize = (obj, type) => obj.ToObject(type);
+            client.Deserialize = (obj, type) => obj.ToObject(type, new System.Text.Json.JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
             services.AddSingleton<RedisClient>(client);
             return services;
         }
